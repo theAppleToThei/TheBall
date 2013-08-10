@@ -17,10 +17,14 @@ import android.view.View.OnTouchListener;
 
 public class somethingElseActivity extends Activity implements OnTouchListener {
 
-	int ballX = 5;
-	int ballY = 5;
-	int ballXSpeed = 1;
-	int ballYSpeed = 1;
+	double radius = 54;
+
+	double ballX = radius + 5;
+	double ballY = radius + 5;
+	double ballXSpeed = 15;
+	double ballYSpeed = 15;
+	
+	double gravity = 9.8;
 
 	SomethingView view;
 	@Override
@@ -79,19 +83,22 @@ public class somethingElseActivity extends Activity implements OnTouchListener {
 				Canvas c = holder.lockCanvas();
 				p.setColor(Color.BLUE);
 				c.drawColor(Color.WHITE);
-				c.drawCircle(ballX, ballY, 100, p);
+				c.drawCircle((int)ballX, (int)ballY, (int)radius, p);
 				ballX += ballXSpeed;
 				ballY += ballYSpeed;
-				if(ballX >= c.getWidth()) {
+				ballYSpeed += gravity * 0.1;
+				if(ballX >= c.getWidth() - radius) {
 					ballXSpeed = -ballXSpeed;
 				}
-				if(ballY >= c.getHeight()) {
+				if(ballY >= c.getHeight() - radius) {
+					ballY = c.getHeight() - radius;
 					ballYSpeed = -ballYSpeed;
 				}
-				if(ballX <= 0) {
+				if(ballX <= radius) { 
 					ballXSpeed *= -1;
 				}
-				if(ballY <= 0) {
+				if(ballY <= radius) {
+					ballY = radius;
 					ballYSpeed *= -1;
 				}
 				holder.unlockCanvasAndPost(c);
